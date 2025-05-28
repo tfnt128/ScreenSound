@@ -12,8 +12,7 @@ internal class MenuRegistrarArtista : Menu
         string nomeDoArtista = Console.ReadLine()!;
         Console.Write("Digite a bio do artista que deseja registrar: ");
         string bioDoArtista = Console.ReadLine()!;
-        int id = 1;
-        Artista artista = new Artista(nomeDoArtista, bioDoArtista, id);
+        Artista artista = new Artista(nomeDoArtista, bioDoArtista);
         artistasRegistrados.Add(nomeDoArtista, artista);
         Console.WriteLine($"O artista {nomeDoArtista} foi registrado com sucesso!");
         Thread.Sleep(4000);

@@ -4,7 +4,13 @@ using ScreenSound.Modelos;
 
 try
 {
-    var artistDal = new ArtistDal();
+    var context = new ScreenSoundContext();
+    var artistDal = new ArtistDal(context);
+
+    var newArtista = new Artista("Legião Urbana", "Banda smzinho") { Id = 4002 };
+    //artistDal.UpdateArtist(newArtista);
+    //artistDal.AddArtist(newArtista);
+    //artistDal.DeleteArtist(newArtista);
     //artistDal.AddArtist(new Artista("Cocoa", "cuzinho2"));
     //artistDal.AddArtist(new Artista("Babilonia", "smzinho", 1));
     //artistDal.DeleteArtist(new Artista("a", "a", 2013));
@@ -12,10 +18,15 @@ try
     //artistDal.DeleteArtist(new Artista("a", "a", 2015));
     //artistDal.UpdateArtist(new Artista("Babiloncio", "Amigo Azul", 2015));
     //artistDal.UpdateArtist(new Artista("Legião Urbana", "cajsklajkls"));
+
     foreach (var artista in artistDal.Listar())
     {
         Console.WriteLine(artista);
     }
+    //foreach (var artista in artistDal.RecuperarPeloNome("Legião Urbana"))
+    //{
+    //    Console.WriteLine(artista);
+    //}
 
 }
 catch (Exception ex)
@@ -24,8 +35,8 @@ catch (Exception ex)
     return;
 }
 
-Artista ira = new Artista("Ira!", "Banda Ira!", 1);
-Artista beatles = new("The Beatles", "Banda The Beatles", 2);
+Artista ira = new Artista("Ira!", "Banda Ira!");
+Artista beatles = new("The Beatles", "Banda The Beatles");
 
 Dictionary<string, Artista> artistasRegistrados = new();
 artistasRegistrados.Add(ira.Nome, ira);
