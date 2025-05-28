@@ -39,9 +39,14 @@ namespace ScreenSound.Data
             _context.Artistas.Update(artista);
             _context.SaveChanges();
         }
-        public IEnumerable<Artista> RecuperarPeloNome(string nome)
+        public IEnumerable<Artista> ListarPeloNome(string nome)
         {
             return _context.Artistas.Where(x => x.Nome == nome).ToList();
+        }
+
+        public Artista? RecuperarPeloNome(string nome)
+        {
+            return _context.Artistas.FirstOrDefault(a => a.Nome.Equals(nome));
         }
     }
 }
