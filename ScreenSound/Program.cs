@@ -3,7 +3,7 @@ using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
 var context = new ScreenSoundContext();
-var artistDal = new ArtistDal(context);
+var artistDal = new DAL<Artista>(context);
 
 Dictionary<int, Menu> opcoes = new();
 opcoes.Add(1, new MenuRegistrarArtista());
