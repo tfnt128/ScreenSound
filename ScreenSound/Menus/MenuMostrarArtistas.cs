@@ -5,7 +5,7 @@ namespace ScreenSound.Menus;
 
 internal class MenuMostrarArtistas : Menu
 {
-    public new void Executar(DAL<Artista> artistDal)
+    public override void Executar(DAL<Artista> artistDal)
     {
         base.Executar(artistDal);
         ExibirTituloDaOpcao("Exibindo todos os artistas registradas na nossa aplicação");

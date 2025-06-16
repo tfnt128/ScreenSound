@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace ScreenSound.Data
 {
-    internal class DAL<T> where T : class
+    public class DAL<T> where T : class
     {
 
-        protected readonly ScreenSoundContext _context;
+        private readonly ScreenSoundContext _context;
 
         public DAL(ScreenSoundContext context)
         {

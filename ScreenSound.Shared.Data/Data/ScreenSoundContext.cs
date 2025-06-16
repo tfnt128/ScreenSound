@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ScreenSound.Data
 {
-    internal class ScreenSoundContext : DbContext
+    public class ScreenSoundContext : DbContext
     {
         public DbSet<Artista> Artistas { get; set; }
         public DbSet<Musica> Musicas { get; set; }
@@ -20,7 +20,7 @@ namespace ScreenSound.Data
             "Application Intent=ReadWrite;Multi Subnet Failover=False";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_connectionString).UseLazyLoadingProxies(); ;
+            optionsBuilder.UseSqlServer(_connectionString);
         }      
     }
 }

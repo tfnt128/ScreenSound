@@ -11,4 +11,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.16" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ScreenSound.Shared.Data\ScreenSound.Shared.Data.csproj" />
+    <ProjectReference Include="..\ScreenSound.Shared.Model\ScreenSound.Shared.Model.csproj" />
+  </ItemGroup>
+
 </Project>
