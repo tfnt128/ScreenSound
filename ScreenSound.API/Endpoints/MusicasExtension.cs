@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ScreenSound.API.Requests;
 using ScreenSound.Data;
 using ScreenSound.Modelos;
 
@@ -21,7 +22,8 @@ namespace ScreenSound.API.Endpoints
                 return Results.Ok(musica);
             });
 
-            app.MapPost("/Musicas", ([FromBody] Musica musica, [FromServices] DAL<Musica> dal) => {
+            app.MapPost("/Musicas", ([FromBody] MusicaRequest musicaRequest, [FromServices] DAL<Musica> dal) => {
+                var musica = new Musica(musicaRequest.Nome, musicaRequest.ReleaseYear);
                 dal.Add(musica);
                 return Results.Ok(musica);
             });
@@ -36,23 +38,23 @@ namespace ScreenSound.API.Endpoints
                 return Results.Ok(musica);
             });
 
-            app.MapPut("/Musicas", ([FromBody] Musica musica, [FromServices] DAL<Musica> dal) => {
-                var musicaAtualizado = dal.Recuperar(a => a.Id == musica.Id);
+            app.MapPut("/Musicas", ([FromBody] MusicaRequestEdit musicaRequestEdit, [FromServices] DAL<Musica> dal) => {
+                var musicaAtualizado = dal.Recuperar(a => a.Id == musicaRequestEdit.Id);
                 if (musicaAtualizado == null)
                 {
-                    musicaAtualizado = dal.Recuperar(a => a.Nome.ToUpper().Equals(musica.Nome.ToUpper()));
+                    musicaAtualizado = dal.Recuperar(a => a.Nome.ToUpper().Equals(musicaRequestEdit.Nome.ToUpper()));
                     if (musicaAtualizado == null)
                     {
-                        return Results.NotFound($"Música com o ID: {musica.Id} ou com o nome '{musica.Nome}' não encontrado.");
+                        return Results.NotFound($"Música com o ID: {musicaRequestEdit.Id} ou com o nome '{musicaRequestEdit.Nome}' não encontrado.");
                     }
 
                 }
-                musicaAtualizado.Nome = musica.Nome;
-                musicaAtualizado.ReleaseYear = musica.ReleaseYear;
+                musicaAtualizado.Nome = musicaRequestEdit.Nome;
+                musicaAtualizado.ReleaseYear = musicaRequestEdit.ReleaseYear;
 
                 dal.Update(musicaAtualizado);
 
-                return Results.Ok(musica);
+                return Results.Ok();
             });
         }
     }

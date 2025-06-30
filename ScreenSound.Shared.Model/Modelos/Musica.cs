@@ -1,13 +1,18 @@
-﻿namespace ScreenSound.Modelos;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ScreenSound.Modelos;
 
 public class Musica
 {
-    public Musica(string nome)
+
+    public Musica() { }
+    public Musica(string nome, int releaseYear)
     {
         Nome = nome;
+        ReleaseYear = releaseYear;
     }
 
-    public string Nome { get; set; }
+    [Required] public string Nome { get; set; }
     public int Id { get; set; }
     public int? ReleaseYear { get; set; }
     public virtual Artista? Artist { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ScreenSound.API.Requests;
 using ScreenSound.Data;
 using ScreenSound.Modelos;
 
@@ -22,7 +23,8 @@ namespace ScreenSound.API.Endpoints
                 return Results.Ok(artista);
             });
 
-            app.MapPost("/Artistas", ([FromBody] Artista artista, [FromServices] DAL<Artista> dal) => {
+            app.MapPost("/Artistas", ([FromBody] ArtistaRequest artistaRequest, [FromServices] DAL<Artista> dal) => {
+                var artista = new Artista(artistaRequest.Nome, artistaRequest.Bio);
                 dal.Add(artista);
                 return Results.Ok(artista);
             });
@@ -37,24 +39,23 @@ namespace ScreenSound.API.Endpoints
                 return Results.Ok(artista);
             });
 
-            app.MapPut("/Artistas", ([FromBody] Artista artista, [FromServices] DAL<Artista> dal) => {
-                var artistaAtualizado = dal.Recuperar(a => a.Id == artista.Id);
+            app.MapPut("/Artistas", ([FromBody] ArtistaRequestEdit artistaRequestEdit, [FromServices] DAL<Artista> dal) => {
+                var artistaAtualizado = dal.Recuperar(a => a.Id == artistaRequestEdit.Id);
                 if (artistaAtualizado == null)
                 {
-                    artistaAtualizado = dal.Recuperar(a => a.Nome.ToUpper().Equals(artista.Nome.ToUpper()));
+                    artistaAtualizado = dal.Recuperar(a => a.Nome.ToUpper().Equals(artistaRequestEdit.Nome.ToUpper()));
                     if (artistaAtualizado == null)
                     {
-                        return Results.NotFound($"Artista com o ID: {artista.Id} ou com o nome '{artista.Nome}' não encontrado.");
+                        return Results.NotFound($"Artista com o ID: {artistaRequestEdit.Id} ou com o nome '{artistaRequestEdit.Nome}' não encontrado.");
                     }
 
                 }
-                artistaAtualizado.Nome = artista.Nome;
-                artistaAtualizado.Bio = artista.Bio;
-                artistaAtualizado.FotoPerfil = artista.FotoPerfil;
+                artistaAtualizado.Nome = artistaRequestEdit.Nome;
+                artistaAtualizado.Bio = artistaRequestEdit.Bio;
 
                 dal.Update(artistaAtualizado);
 
-                return Results.Ok(artista);
+                return Results.Ok();
             });
         }
     }
