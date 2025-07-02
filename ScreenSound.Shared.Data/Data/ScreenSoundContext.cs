@@ -15,16 +15,19 @@ namespace ScreenSound.Data
         public DbSet<Musica> Musicas { get; set; }
         public DbSet<Genero> Generos { get; set; }
 
-        private string _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;" +
+        private string _connectionStringRemote = "Data Source=(localdb)\\MSSQLLocalDB;" +
             "Initial Catalog=ScreenSoundV0;Integrated Security=True;" +
             "Encrypt=False;Trust Server Certificate=False;" +
             "Application Intent=ReadWrite;Multi Subnet Failover=False";
+
+        private string _connectionStringCloud = "Server=tcp:screen-sound-server.database.windows.net,1433;Initial Catalog=ScreenSoundV0;Persist Security Info=False;" +
+            "User ID=thiago;Password=Azure546478!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer(_connectionString)
+                .UseSqlServer(_connectionStringCloud)
                 .UseLazyLoadingProxies();
         }
         override protected void OnModelCreating(ModelBuilder modelBuilder)
