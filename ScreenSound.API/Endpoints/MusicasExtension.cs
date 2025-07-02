@@ -23,7 +23,7 @@ namespace ScreenSound.API.Endpoints
             });
 
             app.MapPost("/Musicas", ([FromBody] MusicaRequest musicaRequest, [FromServices] DAL<Musica> dal) => {
-                var musica = new Musica(musicaRequest.Nome, musicaRequest.ReleaseYear);
+                var musica = new Musica(musicaRequest.Nome, musicaRequest.ArtistaId, musicaRequest.ReleaseYear);
                 dal.Add(musica);
                 return Results.Ok(musica);
             });
