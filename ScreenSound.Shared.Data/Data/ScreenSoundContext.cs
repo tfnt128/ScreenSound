@@ -20,14 +20,17 @@ namespace ScreenSound.Data
             "Encrypt=False;Trust Server Certificate=False;" +
             "Application Intent=ReadWrite;Multi Subnet Failover=False";
 
-        private string _connectionStringCloud = "Server=tcp:screen-sound-server.database.windows.net,1433;Initial Catalog=ScreenSoundV0;Persist Security Info=False;" +
-            "User ID=thiago;Password=Azure546478!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        public ScreenSoundContext(DbContextOptions options) : base(options)
+        {
 
-
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (optionsBuilder.IsConfigured)
+                return;
+
             optionsBuilder
-                .UseSqlServer(_connectionStringCloud)
+                .UseSqlServer(_connectionStringRemote)
                 .UseLazyLoadingProxies();
         }
         override protected void OnModelCreating(ModelBuilder modelBuilder)
