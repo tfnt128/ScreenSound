@@ -4,13 +4,11 @@ namespace ScreenSound.Modelos;
 
 public class Musica
 {
-
+    public virtual ICollection<Genero> Generos { get; set; } = new List<Genero>();
     public Musica() { }
-    public Musica(string nome, int artistId, int releaseYear)
+    public Musica(string nome)
     {
         Nome = nome;
-        ArtistId = artistId;
-        ReleaseYear = releaseYear;
     }
 
     [Required] public string Nome { get; set; }

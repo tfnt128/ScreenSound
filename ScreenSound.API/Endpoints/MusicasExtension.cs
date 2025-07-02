@@ -29,9 +29,16 @@ namespace ScreenSound.API.Endpoints
                 return Results.Ok(EntityToResponse(musica));
             });
 
-            app.MapPost("/Musicas", ([FromBody] MusicaRequest musicaRequest, [FromServices] DAL<Musica> dal) => {
-                var musica = new Musica(musicaRequest.Nome, musicaRequest.ArtistaId, musicaRequest.ReleaseYear);
-                dal.Add(musica);
+            app.MapPost("/Musicas", ([FromBody] MusicaRequest musicaRequest, [FromServices] DAL<Musica> dalMusica,
+                [FromServices] DAL<Genero> dalGen) => {
+                var musica = new Musica(musicaRequest.Nome)
+                {
+                    ArtistId = musicaRequest.ArtistaId,
+                    ReleaseYear = musicaRequest.ReleaseYear,
+                    Generos = musicaRequest.Generos is not null?
+                    GeneroRequestConverter(musicaRequest.Generos, dalGen): new List<Genero>()   
+                };
+                dalMusica.Add(musica);
                 return Results.Ok(musica);
             });
 
@@ -64,6 +71,23 @@ namespace ScreenSound.API.Endpoints
                 return Results.Ok();
             });
         }
+
+        private static ICollection<Genero> GeneroRequestConverter(ICollection<GeneroRequest> generos, DAL<Genero> dalGen)
+        {
+            var listaDeGeneros = new List<Genero>();
+            foreach(var item in generos)
+            {
+                var entity = EntityToRequest(item);
+                var genero = dalGen.Recuperar(a => a.Nome.ToUpper().Equals(item.Nome.ToUpper()));
+                if (genero != null)
+                    listaDeGeneros.Add(genero);
+                else
+                    listaDeGeneros.Add(entity);
+            }
+
+            return listaDeGeneros;
+        }
+
         private static ICollection<MusicaResponse> EntityListToResponseList(IEnumerable<Musica> listaDeMusicas)
         {
             return listaDeMusicas.Select(a => EntityToResponse(a)).ToList();
@@ -72,6 +96,14 @@ namespace ScreenSound.API.Endpoints
         private static MusicaResponse EntityToResponse(Musica musica)
         {
             return new MusicaResponse(musica.Id, musica.Nome!, musica.Artist!.Id, musica.Artist.Nome);
+        }
+        private static Genero EntityToRequest(GeneroRequest genero)
+        {
+            return new Genero() 
+            {
+                Nome = genero.Nome,
+                Descricao = genero.Descricao,
+            };
         }
     }
 }
